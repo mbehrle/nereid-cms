@@ -88,7 +88,7 @@ msgstr "Status"
 
 msgctxt "field:nereid.cms.article,template:"
 msgid "Template"
-msgstr "Vorlage"
+msgstr "Artikel"
 
 msgctxt "field:nereid.cms.article,title:"
 msgid "Title"
@@ -188,7 +188,7 @@ msgstr "Sortierreihenfolge"
 
 msgctxt "field:nereid.cms.article.category,template:"
 msgid "Template"
-msgstr "Vorlage"
+msgstr "Artikel"
 
 msgctxt "field:nereid.cms.article.category,title:"
 msgid "Title"
@@ -344,7 +344,7 @@ msgstr "ID"
 
 msgctxt "field:nereid.cms.category-article,rec_name:"
 msgid "Name"
-msgstr "Name Staat"
+msgstr "Name"
 
 msgctxt "field:nereid.cms.category-article,write_date:"
 msgid "Write Date"
@@ -528,11 +528,11 @@ msgstr "Sammlung verbundener Banner"
 
 msgctxt "model:nereid.cms.category-article,name:"
 msgid "Relationshiop between article and category"
-msgstr "Nereid CMS Kategorie - Artikel"
+msgstr "CMS Kategorie - Artikel"
 
 msgctxt "model:nereid.cms.menuitem,name:"
 msgid "Nereid CMS Menuitem"
-msgstr "Nereid CMS Menüelement"
+msgstr "CMS Menüelement"
 
 msgctxt "selection:nereid.cms.article,state:"
 msgid "Archived"
@@ -545,6 +545,10 @@ msgstr "Entwurf"
 msgctxt "selection:nereid.cms.article,state:"
 msgid "Published"
 msgstr "Publiziert"
+
+msgctxt "selection:nereid.cms.article.attribute,name:"
+msgid ""
+msgstr ""
 
 msgctxt "selection:nereid.cms.article.attribute,name:"
 msgid "Blogger"
@@ -610,6 +614,10 @@ msgctxt "selection:nereid.cms.banner,type:"
 msgid "Custom Code"
 msgstr "Spezifischer Code"
 
+msgctxt "selection:nereid.cms.banner,type:"
+msgid "Media"
+msgstr "Medien"
+
 msgctxt "selection:nereid.cms.menuitem,target:"
 msgid "Blank"
 msgstr "Blank (neuer Tab)"
@@ -628,7 +636,7 @@ msgstr "Statisch"
 
 msgctxt "selection:nereid.cms.menuitem,type_:"
 msgid "View"
-msgstr "View"
+msgstr "Sicht"
 
 msgctxt "view:nereid.cms.article.category:"
 msgid "Articles"
