@@ -547,10 +547,6 @@ msgid "Published"
 msgstr "Publiziert"
 
 msgctxt "selection:nereid.cms.article.attribute,name:"
-msgid ""
-msgstr ""
-
-msgctxt "selection:nereid.cms.article.attribute,name:"
 msgid "Blogger"
 msgstr "Blogger"
 
