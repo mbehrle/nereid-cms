@@ -534,6 +534,10 @@ msgctxt "model:nereid.cms.menuitem,name:"
 msgid "Nereid CMS Menuitem"
 msgstr "CMS Menüelement"
 
+msgctxt "nereid:cms.py:1032"
+msgid "File uploaded"
+msgstr "Datei hochgeladen"
+
 msgctxt "selection:nereid.cms.article,state:"
 msgid "Archived"
 msgstr "Archiviert"
