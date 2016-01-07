@@ -21,6 +21,7 @@ from nereid.contrib.sitemap import SitemapIndex, SitemapSection
 from werkzeug.utils import secure_filename
 from werkzeug.contrib.atom import AtomFeed
 from nereid.ctx import has_request_context
+from nereid.contrib.locale import make_lazy_gettext
 
 from trytond.pyson import Eval, Not, Equal
 from trytond.model import ModelSQL, ModelView, fields, Workflow
@@ -37,6 +38,8 @@ try:
     from markdown import markdown
 except ImportError:
     markdown = None
+
+_ = make_lazy_gettext('nereid_cms')
 
 __all__ = [
     'MenuItem', 'BannerCategory', 'Banner', 'Website',
@@ -1026,7 +1029,7 @@ class Website:
             if request.is_xhr:
                 return jsonify(success=True, item=static_file.serialize())
 
-            flash("File uploaded")
+            flash(_('File uploaded'))
         if request.is_xhr:
             return jsonify(success=False)
         return redirect(request.referrer)
