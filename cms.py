@@ -13,7 +13,7 @@ from datetime import datetime
 from nereid import context_processor
 from nereid import (
     render_template, request, login_required, jsonify, redirect, flash,
-    abort, route
+    abort, route, current_user, current_website
 )
 from nereid.helpers import slugify, url_for
 from nereid.contrib.pagination import Pagination
@@ -24,10 +24,9 @@ from nereid.ctx import has_request_context
 from nereid.contrib.locale import make_lazy_gettext
 
 from trytond.pyson import Eval, Not, Equal
-from trytond.model import ModelSQL, ModelView, fields, Workflow
+from trytond.model import ModelSQL, ModelView, fields, Workflow, Unique
 from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
-from trytond import backend
 
 try:
     from docutils.core import publish_parts
@@ -132,31 +131,6 @@ class MenuItem(ModelSQL, ModelView, CMSMenuItemMixin):
     )
 
     @classmethod
-    def __register__(cls, module_name):
-        TableHandler = backend.get('TableHandler')
-        cursor = Transaction().cursor
-        sql_table = cls.__table__()
-
-        super(MenuItem, cls).__register__(module_name)
-
-        table = TableHandler(cursor, cls, module_name)
-        if table.column_exist('reference'):  # pragma: no cover
-            table.not_null_action('unique_name', 'remove')
-
-            # Delete the newly created record column
-            table.drop_column('record')
-
-            # Rename the reference column as record
-            table.column_rename('reference', 'record', True)
-
-            # The value of type depends on existence of record
-            cursor.execute(*sql_table.update(
-                columns=[sql_table.type_],
-                values=['record'],
-                where=(sql_table.record != None)  # noqa
-            ))
-
-    @classmethod
     def allowed_models(cls):
         return [
             (None, ''),
@@ -232,8 +206,8 @@ class MenuItem(ModelSQL, ModelView, CMSMenuItemMixin):
         if max_depth > 0:
             res['children'] = self.get_children(max_depth=max_depth - 1)
 
-        if (self.type_ == 'record' and not res.get('children')
-                and max_depth > 0):
+        if (self.type_ == 'record' and not res.get('children') and
+                max_depth > 0):
             res['children'] = self.record.get_children(
                 max_depth=max_depth - 1
             )
@@ -283,7 +257,7 @@ class BannerCategory(ModelSQL, ModelView):
         """
         category = cls.search([
             ('name', '=', uri),
-            ('website', '=', request.nereid_website.id)
+            ('website', '=', current_website.id)
         ], limit=1)
         if not category and not silent:
             raise RuntimeError("Banner category %s not found" % uri)
@@ -369,17 +343,13 @@ class Banner(Workflow, ModelSQL, ModelView):
     reference = fields.Reference('Reference', selection='allowed_models')
 
     @classmethod
-    def __register__(cls, module_name):
-        super(Banner, cls).__register__(module_name)
-
-        table = cls.__table__()
-        cursor = Transaction().cursor
-        # Update type from image to media
-        query = table.update(
-            columns=[table.type],
-            values=["media"],
-            where=(table.type == "image"))
-        cursor.execute(*query)
+    def view_attributes(cls):
+        return super(Banner, cls).view_attributes() + [
+            ('//page[@id="image"]', 'states', {
+                'invisible': Eval('type') == 'custom_code'
+            }), ('//page[@id="custom_code"]', 'states', {
+                'invisible': Eval('type') != 'custom_code'
+            })]
 
     @classmethod
     def __setup__(cls):
@@ -510,17 +480,16 @@ class ArticleCategory(ModelSQL, ModelView, CMSMenuItemMixin):
     @classmethod
     def __setup__(cls):
         super(ArticleCategory, cls).__setup__()
+        table = cls.__table__()
         cls._sql_constraints += [
-            ('unique_name', 'UNIQUE(unique_name)',
+            ('unique_name', Unique(table, table.unique_name),
                 'The Unique Name of the Category must be unique.'),
         ]
 
     @fields.depends('title', 'unique_name')
     def on_change_title(self):
-        res = {}
         if self.title and not self.unique_name:
-            res['unique_name'] = slugify(self.title)
-        return res
+            self.unique_name = slugify(self.title)
 
     @staticmethod
     def default_articles_per_page():
@@ -657,7 +626,6 @@ class Article(Workflow, ModelSQL, ModelView, CMSMenuItemMixin):
     title = fields.Char('Title', required=True, select=True, translate=True)
     content = fields.Text('Content', required=True, translate=True)
     template = fields.Char('Template', required=True)
-    active = fields.Boolean('Active', select=True)
     image = fields.Many2One('nereid.static.file', 'Image')
     employee = fields.Many2One('company.employee', 'Employee')
     author = fields.Many2One('nereid.user', 'Author')
@@ -685,18 +653,6 @@ class Article(Workflow, ModelSQL, ModelView, CMSMenuItemMixin):
         ('published', 'Published'),
         ('archived', 'Archived')
     ], 'State', required=True, select=True, readonly=True)
-
-    @classmethod
-    def __register__(cls, module_name):
-        TableHandler = backend.get('TableHandler')
-        cursor = Transaction().cursor
-
-        table = TableHandler(cursor, cls, module_name)
-
-        if not table.column_exist('employee'):
-            table.column_rename('author', 'employee')
-
-        super(Article, cls).__register__(module_name)
 
     @classmethod
     def __setup__(cls):
@@ -788,16 +744,10 @@ class Article(Workflow, ModelSQL, ModelView, CMSMenuItemMixin):
 
         return MenuItem.allowed_models()
 
-    @staticmethod
-    def default_active():
-        return True
-
     @fields.depends('title', 'uri')
     def on_change_title(self):
-        res = {}
         if self.title and not self.uri:
-            res['uri'] = slugify(self.title)
-        return res
+            self.uri = slugify(self.title)
 
     @staticmethod
     def default_template():
@@ -814,13 +764,13 @@ class Article(Workflow, ModelSQL, ModelView, CMSMenuItemMixin):
         if user.employee:
             return user.employee.id
 
-        if has_request_context() and request.nereid_user.employee:
-            return request.nereid_user.employee.id
+        if has_request_context() and current_user.employee:
+            return current_user.employee.id
 
     @staticmethod
     def default_author():
         if has_request_context():
-            return request.nereid_user.id
+            return current_user.id
 
     @staticmethod
     def default_published_on():
@@ -897,7 +847,7 @@ class Article(Workflow, ModelSQL, ModelView, CMSMenuItemMixin):
         Returns an atom ID for the article
         """
         return (
-            'tag:' + request.nereid_website.name + ',' +
+            'tag:' + current_website.name + ',' +
             self.publish_date + ':Article/' + str(self.id)
         )
 
@@ -1017,15 +967,15 @@ class Website:
 
         file = request.files['file']
         if file:
-            static_file = StaticFile.create({
-                'folder': request.nereid_website.cms_static_folder,
+            static_file, = StaticFile.create([{
+                'folder': current_website.cms_static_folder,
                 'name': '_'.join([
                     str(int(time.time())),
                     secure_filename(file.filename),
                 ]),
                 'type': upload_type,
                 'file_binary': file.read(),
-            })
+            }])
             if request.is_xhr:
                 return jsonify(success=True, item=static_file.serialize())
 
@@ -1046,7 +996,7 @@ class Website:
 
         files = Pagination(
             StaticFile, [
-                ('folder', '=', request.nereid_website.cms_static_folder.id)
+                ('folder', '=', current_website.cms_static_folder.id)
             ], page, 10
         )
         return jsonify(items=[
@@ -1066,26 +1016,3 @@ class ArticleCategoryRelation(ModelSQL):
     article = fields.Many2One(
         'nereid.cms.article', 'Article', select=True
     )
-
-    @classmethod
-    def __register__(cls, module_name):
-        TableHandler = backend.get('TableHandler')
-        cursor = Transaction().cursor
-        Article = Pool().get('nereid.cms.article')
-
-        table = TableHandler(cursor, Article, module_name)
-
-        # Move data from category to categories
-        if table.column_exist('category'):
-            article = Article.__table__()
-            article_categ_rel = cls.__table__()
-
-            article_select = article.select(article.id, article.category)
-            cursor.execute(*article_categ_rel.insert(
-                columns=[article_categ_rel.article, article_categ_rel.category],
-                values=article_select
-            ))
-
-            table.drop_column('category')
-
-        super(ArticleCategoryRelation, cls).__register__(module_name)
