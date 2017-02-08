@@ -66,7 +66,7 @@ requires.append(
 test_requirements = ['docutils', 'markdown']
 
 setup(
-    name='fio_nereid_cms',
+    name='m9s_nereid_cms',
     version=info.get('version', '0.0.1'),
     description='Tryton Nereid CMS',
     author='Fulfil.IO Inc., Openlabs Technologies & Consulting (P) Limited',
