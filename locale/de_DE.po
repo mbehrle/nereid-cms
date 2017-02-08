@@ -10,10 +10,6 @@ msgctxt "error:nereid.cms.menuitem:"
 msgid "Error ! You can not create recursive menuitems."
 msgstr "Menüelemente können nicht rekursiv angelegt werden"
 
-msgctxt "field:nereid.cms.article,active:"
-msgid "Active"
-msgstr "Aktiv"
-
 msgctxt "field:nereid.cms.article,attributes:"
 msgid "Attributes"
 msgstr "Attribute"
@@ -534,7 +530,7 @@ msgctxt "model:nereid.cms.menuitem,name:"
 msgid "Nereid CMS Menuitem"
 msgstr "CMS Menüelement"
 
-msgctxt "nereid:cms.py:1032"
+msgctxt "nereid:cms.py:982"
 msgid "File uploaded"
 msgstr "Datei hochgeladen"
 
@@ -549,6 +545,10 @@ msgstr "Entwurf"
 msgctxt "selection:nereid.cms.article,state:"
 msgid "Published"
 msgstr "Publiziert"
+
+msgctxt "selection:nereid.cms.article.attribute,name:"
+msgid ""
+msgstr ""
 
 msgctxt "selection:nereid.cms.article.attribute,name:"
 msgid "Blogger"
