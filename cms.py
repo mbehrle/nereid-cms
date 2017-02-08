@@ -915,7 +915,7 @@ class ArticleAttribute(ModelSQL, ModelView):
     _rec_name = 'value'
 
     name = fields.Selection([
-        ('', None),
+        (None, ''),
         ('google+', 'Google+'),
         ('facebook', 'Facebook'),
         ('twitter', 'Twitter'),
