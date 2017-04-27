@@ -627,16 +627,16 @@ msgid "Self"
 msgstr "Self (im selben Tab)"
 
 msgctxt "selection:nereid.cms.menuitem,type_:"
-msgid "Record"
-msgstr "Datensatz"
+msgid "Record (Link to product/category/article)"
+msgstr "Datensatz (Verknüpfung zu Variante/Kategorie/Artikel)"
 
 msgctxt "selection:nereid.cms.menuitem,type_:"
-msgid "Static"
-msgstr "Statisch"
+msgid "Static (Web Address)"
+msgstr "Statisch (Webadresse)"
 
 msgctxt "selection:nereid.cms.menuitem,type_:"
-msgid "View"
-msgstr "Sicht"
+msgid "View (Parent Menu)"
+msgstr "Sicht (Übergeordnetes Menü)"
 
 msgctxt "view:nereid.cms.article.category:"
 msgid "Articles"
