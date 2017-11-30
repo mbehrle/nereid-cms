@@ -16,12 +16,12 @@
             <field name="model">nereid.cms.menuitem</field>
             <field name="type">tree</field>
             <field name="name">cms_menu_item_tree</field>
-            <field name="priority">10</field>
+	    <field name="priority" eval="10"/>
         </record>
         <record model="ir.ui.view" id="cms_menuitems_view_tree2">
             <field name="model">nereid.cms.menuitem</field>
             <field name="type">tree</field>
-            <field name="priority">5</field>
+	    <field name="priority" eval="5"/>
             <field name="name">cms_menu_item_tree2</field>
             <field name="field_childs">child</field>
         </record>
