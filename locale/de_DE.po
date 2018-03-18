@@ -371,7 +371,7 @@ msgid "ID"
 msgstr "ID"
 
 msgctxt "field:nereid.cms.menuitem,link:"
-msgid "Link"
+msgid "Web Address"
 msgstr "Link"
 
 msgctxt "field:nereid.cms.menuitem,parent:"
@@ -383,7 +383,7 @@ msgid "Name"
 msgstr "Name"
 
 msgctxt "field:nereid.cms.menuitem,record:"
-msgid "Record"
+msgid "Select Record"
 msgstr "Datensatz"
 
 msgctxt "field:nereid.cms.menuitem,sequence:"
@@ -418,13 +418,13 @@ msgctxt "help:nereid.cms.article.category,unique_name:"
 msgid "Unique Name is used as the uri."
 msgstr "Der eindeutige Name wird als URI verwendet."
 
+msgctxt "model:ir.action,name:"
+msgid "New Menuitem"
+msgstr "Neues Menüelement"
+
 msgctxt "model:ir.action,name:act_cms_menuitems_form"
 msgid "CMS Menuitems"
 msgstr "CMS Menüelemente"
-
-msgctxt "model:ir.action,name:act_cms_menuitems_form_new"
-msgid "New Menuitem"
-msgstr "Neues Menüelement"
 
 msgctxt "model:ir.action,name:act_cms_menuitems_tree"
 msgid "CMS Menuitems"
@@ -458,9 +458,9 @@ msgctxt "model:ir.action.act_window.domain,name:act_cms_articles_published"
 msgid "Published"
 msgstr "Publiziert"
 
-msgctxt "model:ir.ui.menu,name:menu_cms_articles"
+msgctxt "model:ir.ui.menu,name:"
 msgid "Articles"
-msgstr "Artikel"
+msgstr "Menüs"
 
 msgctxt "model:ir.ui.menu,name:menu_cms_articles_articles"
 msgid "Articles"
@@ -474,33 +474,13 @@ msgctxt "model:ir.ui.menu,name:menu_cms_banner_category"
 msgid "Banner Categories"
 msgstr "Bannerkategorien"
 
-msgctxt "model:ir.ui.menu,name:menu_cms_banners"
-msgid "Banners"
-msgstr "Banner"
-
 msgctxt "model:ir.ui.menu,name:menu_cms_banners_banners"
 msgid "Banners"
 msgstr "Banner"
 
 msgctxt "model:ir.ui.menu,name:menu_cms_menuitems_tree"
-msgid "CMS Menuitems"
+msgid "CMS Menüelemente"
 msgstr "CMS Menüelemente"
-
-msgctxt "model:ir.ui.menu,name:menu_nereid_cms"
-msgid "CMS"
-msgstr "CMS"
-
-msgctxt "model:ir.ui.menu,name:menu_nereid_cms_menuitems"
-msgid "Menuitems"
-msgstr "Menüelemente"
-
-msgctxt "model:ir.ui.menu,name:menu_nereid_cms_menuitems_new"
-msgid "New Menuitem"
-msgstr "Neues Menüelement"
-
-msgctxt "model:ir.ui.menu,name:menu_nereid_cms_menus"
-msgid "Menus"
-msgstr "Menüs"
 
 msgctxt "model:nereid.cms.article,name:"
 msgid "CMS Articles"
